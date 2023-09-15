@@ -1,7 +1,7 @@
 ---
 title: Markdown 展示
 icon: fab fa-markdown
-order: 2
+order: 1
 category:
   - 使用指南
 tag:
@@ -303,8 +303,8 @@ $$
 ```
 
 ```js
-document.querySelector("#very").addEventListener("click", () => {
-  alert("非常强大");
+document.querySelector('#very').addEventListener('click', () => {
+  alert('非常强大');
 });
 ```
 
@@ -331,7 +331,7 @@ span {
 @file index.ts
 
 ```ts
-const msg = "hello world";
+const msg = 'hello world';
 
 const speak = (msg: string) => console.log(msg);
 
@@ -350,9 +350,9 @@ speak(msg);
 
 ```vue
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
-const msg = ref("Hello World!");
+const msg = ref('Hello World!');
 </script>
 
 <template>
@@ -367,7 +367,7 @@ const msg = ref("Hello World!");
 
 #### 幻灯片
 
-@slidestart
+@slideordert
 
 ## 幻灯片 1
 
