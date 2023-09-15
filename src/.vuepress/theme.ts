@@ -23,6 +23,7 @@ export default hopeTheme({
     timeline: '时间轴'
     // intro: '/intro.html'
   },
+
   encrypt: {
     config: {
       '/demo/encrypt.html': ['1234']
@@ -32,7 +33,7 @@ export default hopeTheme({
   //   editLink: '在 GitHub 上编辑此页'
   // },
   plugins: {
-    blog: true,
+    blog: {},
     // comment: {
     //   // You should generate and use your own comment service
     //   provider: 'Waline',

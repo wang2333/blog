@@ -1,7 +1,7 @@
 ---
 title: 布局与功能禁用
 icon: gears
-order: 2
+sticky: 22
 category:
   - 使用指南
 tag:

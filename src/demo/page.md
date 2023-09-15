@@ -6,9 +6,7 @@ cover: /assets/images/cover1.jpg
 # 这是页面的图标
 icon: file
 # 这是侧边栏的顺序
-order: 3
-# 设置作者
-author: Ms.Hope
+sticky: 333
 # 设置写作时间
 date: 2020-01-01
 # 一个页面可以有多个分类
