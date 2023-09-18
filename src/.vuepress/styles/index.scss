@@ -1,11 +1,93 @@
 // place your custom styles here
-.sticky-icon{
+.sticky-icon {
   display: none;
 }
-.vp-page-nav{
+.vp-page-nav {
   display: none;
 }
 // 此页内容
-.toc-header{
+.toc-header {
   display: none;
+}
+#app {
+  #article-list {
+    position: relative;
+    z-index: 2;
+  }
+  .vp-blog-info-wrapper {
+    z-index: 2;
+  }
+}
+#navbar {
+  .arrow {
+    display: none;
+  }
+
+  &.nav-top {
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    .vp-navbar-start,
+    .vp-navbar-end {
+      * {
+        color: #fff;
+      }
+    }
+    .nav-item > a,
+    .dropdown-title .title {
+      color: #fff;
+    }
+  }
+}
+
+.vp-page {
+  padding-top: 0 !important;
+  background-color: #fffc;
+  .vp-blog-hero.fullscreen {
+    height: 100vh !important;
+    z-index: 2;
+  }
+}
+// 背景颜色
+#page-bg {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-image: linear-gradient(
+    to right,
+    #eea2a2 0%,
+    #bbc1bf 19%,
+    #57c6e1 42%,
+    #b49fda 79%,
+    #7ac5d8 100%
+  );
+  background-size: 300% 300%;
+}
+// 背景图片
+#figure-bg {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background: url('/assets/images/bg.svg') center center / cover no-repeat;
+}
+#sidebar {
+  background-color: transparent !important;
+  backdrop-filter: none;
+  z-index: 2;
+}
+#main-content {
+  &.vp-page {
+    padding-top: 60px !important;
+    backdrop-filter: saturate(150%) blur(0.75rem);
+    background-color: #fffc;
+    z-index: 1;
+  }
 }

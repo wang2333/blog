@@ -12,10 +12,10 @@ export default hopeTheme(
     iconAssets: 'fontawesome-with-brands',
     // logo: '/logo.svg',
     // repo: 'vuepress-theme-hope/vuepress-theme-hope',
-    pageInfo: false, // disable the information of pages
+    // pageInfo: false, // disable the information of pages
     contributors: false, // disable the information of contributors
     footer: '',
-    displayFooter: true,
+    // displayFooter: true,
     copyright: false,
     blog: {
       description: '前端攻城狮',

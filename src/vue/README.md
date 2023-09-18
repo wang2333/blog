@@ -2,6 +2,7 @@
 title: vue
 index: false
 icon: fab fa-vuejs
+article: false
 ---
 
 ## 目录
