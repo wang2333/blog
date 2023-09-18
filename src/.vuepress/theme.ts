@@ -6,6 +6,7 @@ export default hopeTheme(
   {
     navbar,
     sidebar,
+    breadcrumb: false,
     hostname: 'https://myblog-eyx.pages.dev',
     docsDir: 'src',
     iconAssets: 'fontawesome-with-brands',

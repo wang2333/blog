@@ -1,11 +1,6 @@
 ---
 title: 布局与功能禁用
 icon: gears
-sticky: 22
-category:
-  - 使用指南
-tag:
-  - 禁用
 
 navbar: false
 sidebar: false

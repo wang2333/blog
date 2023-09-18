@@ -9,9 +9,7 @@ export default defineUserConfig({
   lang: 'zh-CN',
   title: '王小帅自习室',
   description: '王小帅自习室',
-
   theme,
-
   alias: {
     '@theme-hope/modules/blog/components/BlogHero': path.resolve(
       __dirname,
