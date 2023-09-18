@@ -18,8 +18,18 @@
     z-index: 2;
   }
 }
-#navbar .arrow {
-  display: none;
+
+#navbar {
+  .vp-navbar-end {
+    display: none;
+  }
+  .vp-navbar-center {
+    margin-right: 50px;
+    justify-content: end;
+  }
+  .arrow {
+    display: none;
+  }
 }
 .home {
   .vp-page {
