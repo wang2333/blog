@@ -1,5 +1,5 @@
 ---
-title: vue2
+title: Vue2
 sticky: 1
 category:
   - 框架

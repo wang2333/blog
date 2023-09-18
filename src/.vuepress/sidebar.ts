@@ -4,24 +4,25 @@ export default sidebar({
   '/': [
     '',
     {
-      text: 'vue',
+      text: 'Vue',
       icon: 'fab fa-vuejs',
-      prefix: 'vue/',
-      link: 'vue/',
-      children: ['vue2', 'vue3']
-    }, 
+      prefix: 'Vue/',
+      link: 'Vue/',
+      children: ['Vue2', 'Vue3']
+    },
     {
       text: '如何使用',
       icon: 'laptop-code',
       prefix: 'demo/',
       link: 'demo/',
       children: 'structure'
+    },
+    {
+      text: 'React',
+      icon: 'fab fa-react',
+      link: 'React/'
+      // prefix: 'posts/',
+      // children: 'structure'
     }
-    // {
-    //   text: '文章',
-    //   icon: 'book',
-    //   prefix: 'posts/',
-    //   children: 'structure'
-    // }
   ]
 });

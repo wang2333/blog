@@ -1,5 +1,5 @@
 ---
-title: vue
+title: Vue
 index: false
 icon: fab fa-vuejs
 article: false

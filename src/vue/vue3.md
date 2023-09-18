@@ -1,5 +1,5 @@
 ---
-title: vue3
+title: Vue3
 sticky: 2
 category:
   - 框架
