@@ -8,7 +8,7 @@ export default defineUserConfig({
   base: '/',
   lang: 'zh-CN',
   title: '王小帅自习室',
-  description: '王小帅自习室',
+  description: '王小帅的自习室',
   theme,
   alias: {
     '@theme-hope/modules/blog/components/BlogHero': path.resolve(
@@ -17,7 +17,7 @@ export default defineUserConfig({
     ),
     '@theme-hope/modules/navbar/components/Navbar': path.resolve(
       __dirname,
-      './components/NormalPage.vue'
+      './components/Navbar.vue'
     )
   },
   head: [

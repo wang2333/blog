@@ -3,7 +3,7 @@ home: true
 layout: BlogHome
 icon: home
 title: 主页
-heroImage: /logo.svg
+heroImage: /assets/icon/logo.png
 heroText: 王小帅自习室
 heroFullScreen: true
 tagline: 发现未知，创造辉煌，王小帅自习室，前端新潮流！

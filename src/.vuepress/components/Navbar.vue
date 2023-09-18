@@ -13,6 +13,7 @@ const handleScroll = () => {
 };
 onMounted(() => {
   if (location.pathname === '/') {
+    document.body.classList.add('home');
     const navbarEl = document.getElementById('navbar');
     navbarEl.classList.add('nav-top');
     window.removeEventListener('scroll', handleScroll);
@@ -28,6 +29,7 @@ onMounted(() => {
   document.querySelector('.theme-container').appendChild(pageBgDiv);
 });
 onUnmounted(() => {
+  document.body.classList.remove('home');
   window.removeEventListener('scroll', handleScroll);
   const figureBg = document.getElementById('figure-bg');
   document.body.removeChild(figureBg);

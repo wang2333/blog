@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "description": "王小帅自习室",
+  "description": "王小帅个人博客",
   "license": "MIT",
   "type": "module",
   "scripts": {

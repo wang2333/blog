@@ -10,7 +10,7 @@ export default hopeTheme(
     hostname: 'https://myblog-eyx.pages.dev',
     docsDir: 'src',
     iconAssets: 'fontawesome-with-brands',
-    // logo: '/logo.svg',
+    logo: '/assets/icon/logo.png',
     // repo: 'vuepress-theme-hope/vuepress-theme-hope',
     // pageInfo: false, // disable the information of pages
     contributors: false, // disable the information of contributors

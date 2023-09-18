@@ -9,8 +9,13 @@ import BingHeroBackground from 'vuepress-theme-hope/presets/BingHeroBackground.j
     <template #heroInfo="heroInfo">
       <HitokotoBlogHero v-bind="heroInfo" />
     </template>
-    <template #heroBg>
-      <BingHeroBackground />
-    </template>
+    <!-- <template #heroBg> -->
+    <!-- <BingHeroBackground /> -->
+    <!-- </template> -->
   </BlogHero>
 </template>
+<style>
+.vp-blog-hero-title {
+  display: none;
+}
+</style>
