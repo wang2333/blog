@@ -4,11 +4,16 @@ export default sidebar({
   '/': [
     '',
     {
-      text: 'Vue',
+      text: 'Vue系列',
       icon: 'fab fa-vuejs',
       prefix: 'Vue/',
-      link: 'Vue/',
       children: ['Vue2', 'Vue3']
+    },
+    {
+      text: 'React系列',
+      icon: 'fab fa-react',
+      prefix: 'React/',
+      children: ['React知识点']
     },
     {
       text: '如何使用',
@@ -16,13 +21,6 @@ export default sidebar({
       prefix: 'demo/',
       link: 'demo/',
       children: 'structure'
-    },
-    {
-      text: 'React',
-      icon: 'fab fa-react',
-      link: 'React/'
-      // prefix: 'posts/',
-      // children: 'structure'
     }
   ]
 });

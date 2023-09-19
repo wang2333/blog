@@ -1,5 +1,6 @@
 ---
 icon: lock
+article: false
 ---
 
 # 密码加密的文章

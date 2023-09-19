@@ -3,15 +3,16 @@ import { navbar } from 'vuepress-theme-hope';
 export default navbar([
   '/',
   {
-    text: 'Vue',
+    text: 'Vue系列',
     icon: 'fab fa-vuejs',
     prefix: '/Vue/',
     children: ['Vue2', 'Vue3']
   },
   {
-    text: 'React',
+    text: 'React系列',
     icon: 'fab fa-react',
-    link: '/React/'
+    prefix: '/React/',
+    children: ['React知识点']
   },
   'demo'
 ]);

@@ -16,7 +16,7 @@ export default hopeTheme(
     contributors: false, // disable the information of contributors
     footer: '',
     darkmode: 'disable',
-    displayFooter: true,
+    // displayFooter: true,
     copyright: false,
     blog: {
       description: '前端攻城狮',
