@@ -1,9 +1,9 @@
 ---
 title: Vue3知识点
 icon: fab fa-vuejs
-sticky: 2
+sticky: 3
 category:
-  - 框架
+  - 前端框架
 tag:
   - Vue
 ---

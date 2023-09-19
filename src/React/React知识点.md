@@ -1,9 +1,9 @@
 ---
 title: React知识点
-sticky: 3
+sticky: 4
 icon: fab fa-react
 category:
-  - 框架
+  - 前端框架
 tag:
   - React
 ---

@@ -20,12 +20,9 @@
 }
 
 #navbar {
-  .vp-navbar-end {
-    display: none;
-  }
   .vp-navbar-center {
-    margin-right: 50px;
     justify-content: end;
+    flex: 7;
   }
   .arrow {
     display: none;
@@ -45,6 +42,11 @@
       .vp-navbar-end {
         * {
           color: #fff;
+        }
+      }
+      .search-pro-button {
+        * {
+          color: var(--vp-c);
         }
       }
       .nav-item > a,
