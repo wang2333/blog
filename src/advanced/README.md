@@ -2,8 +2,10 @@
 title: 前端进阶
 icon: fab fa-js
 sticky: 1
-tag:
+category:
   - 前端进阶
+tag:
+  - js 进阶
 ---
 
 前端进阶是指深入学习和应用前端技术的过程。它包括对 HTML、CSS 和 JavaScript 的深入理解。

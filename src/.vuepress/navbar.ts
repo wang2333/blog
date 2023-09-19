@@ -3,16 +3,18 @@ import { navbar } from 'vuepress-theme-hope';
 export default navbar([
   '/',
   '/advanced',
+  '/algorithm',
   {
     text: 'Vue系列',
     icon: 'fab fa-vuejs',
-    prefix: '/Vue/',
-    link: '/Vue'
+    prefix: '/vue',
+    link: '/vue'
   },
   {
     text: 'React系列',
     icon: 'fab fa-react',
-    prefix: '/React/',
-    link: '/React'
-  }
+    prefix: '/react',
+    link: '/react'
+  },
+  '/project'
 ]);

@@ -4,19 +4,20 @@ export default sidebar({
   '/': [
     '',
     '/advanced',
+    '/algorithm',
     {
       text: 'Vue系列',
       icon: 'fab fa-vuejs',
-      prefix: '/Vue/',
-      link: '/Vue',
-      children: ['Vue2', 'Vue3']
+      prefix: '/vue',
+      link: '/vue',
+      children: ['vue2', 'vue3']
     },
     {
       text: 'React系列',
       icon: 'fab fa-react',
-      prefix: '/React/',
-      link: '/React',
-      children: ['React知识点']
+      prefix: '/react/',
+      link: '/react',
+      children: ['react知识点']
     },
     {
       text: '如何使用',
@@ -24,6 +25,7 @@ export default sidebar({
       prefix: 'demo/',
       link: 'demo/',
       children: 'structure'
-    }
+    },
+    '/project'
   ]
 });
