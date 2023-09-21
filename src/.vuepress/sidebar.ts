@@ -3,21 +3,21 @@ import { sidebar } from 'vuepress-theme-hope';
 export default sidebar({
   '/': [
     '',
-    '/advanced',
-    '/algorithm',
+    'advanced',
+    'algorithm',
     {
       text: 'Vue系列',
       icon: 'fab fa-vuejs',
-      prefix: '/vue',
-      link: '/vue',
-      children: ['vue2', 'vue3']
+      prefix: 'vue/',
+      link: 'vue/',
+      children: 'structure'
     },
     {
       text: 'React系列',
       icon: 'fab fa-react',
-      prefix: '/react/',
-      link: '/react',
-      children: ['react知识点']
+      prefix: 'react/',
+      link: 'react/',
+      children: 'structure'
     },
     {
       text: '如何使用',
@@ -26,6 +26,6 @@ export default sidebar({
       link: 'demo/',
       children: 'structure'
     },
-    '/project'
+    'project'
   ]
 });
