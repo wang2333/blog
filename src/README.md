@@ -7,7 +7,7 @@ heroImage: /assets/icon/logo.png
 heroText: 王小帅自习室
 heroFullScreen: true
 tagline: 发现未知，创造辉煌，王小帅自习室，前端新潮流！
-bgImage: http://timpcfan-site.cdn.bcebos.com/imgs/G6UPhn.jpg
+bgImage: /assets/images/home.jpg
 # projects:
 #   - icon: project
 #     name: 项目名称
