@@ -10,8 +10,9 @@ article: false
 const fs = require('fs');
 const path = require('path');
 const Jimp = require('jimp');
+const readline = require('readline');
 
-const INPUT_DIR = './社團學姊';
+const INPUT_DIR = './遊戲不能這樣玩';
 const OUTPUT_DIR = INPUT_DIR + '/output';
 const THUMBNAIL_WIDTH = 300;
 
@@ -116,6 +117,14 @@ const main = async compressImages => {
   }
 };
 
-const compressImages = process.argv[2] !== 'false';
-main(compressImages);
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question('是否压缩图片？（Y/N）', answer => {
+  const compressImages = answer.trim().toLowerCase() === 'y';
+  main(compressImages);
+  rl.close();
+});
 ```
