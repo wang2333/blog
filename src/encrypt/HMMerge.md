@@ -6,7 +6,7 @@ article: false
 
 # 韩漫合并
 
-```JavaScript
+```javascript
 const fs = require('fs');
 const path = require('path');
 const Jimp = require('jimp');
@@ -109,5 +109,4 @@ const main = async compressImages => {
 
 const compressImages = process.argv[2] !== 'false';
 main(compressImages);
-
 ```

@@ -6,7 +6,7 @@ article: false
 
 # 韩漫下载
 
-```JavaScript
+```javascript
 const fs = require('fs');
 const axios = require('axios');
 const { JSDOM } = require('jsdom');
