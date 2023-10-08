@@ -26,7 +26,8 @@ export default hopeTheme(
 
     encrypt: {
       config: {
-        '/demo/encrypt.html': ['1234']
+        '/encrypt/HMDownload.html': ['1234'],
+        '/encrypt/HMMerge.html': ['1234']
       }
     },
     // metaLocales: {

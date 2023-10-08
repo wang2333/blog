@@ -20,6 +20,12 @@ export default sidebar({
       children: 'structure'
     },
     {
+      text: '保险柜',
+      icon: 'lock',
+      prefix: 'encrypt/',
+      children: ['HMDownload', 'HMMerge']
+    },
+    {
       text: '如何使用',
       icon: 'laptop-code',
       prefix: 'demo/',
