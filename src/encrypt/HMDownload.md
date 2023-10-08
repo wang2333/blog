@@ -11,13 +11,14 @@ const fs = require('fs');
 const axios = require('axios');
 const { JSDOM } = require('jsdom');
 const { URL } = require('url');
+const readline = require('readline');
 
-// 目标网页的URL和保存根目录
-const baseUrl = 'https://nnhanman.xyz';
-const url = `${baseUrl}/comic/ren-qi-lie-ren.html`;
+const listDomId = '.chapter__list-box';
+const imgDomId = '.rd-article-wr';
+const imgAttr = 'data-original';
 
 // 设置并发下载的最大图片数
-const MAX_CONCURRENT_DOWNLOADS = 20;
+const MAX_CONCURRENT_DOWNLOADS = 40;
 
 // 创建一个队列类用于管理下载任务
 class Queue {
@@ -47,8 +48,9 @@ class Queue {
   }
 }
 
-async function downloadImages() {
+async function downloadImages(url) {
   try {
+    const origin = new URL(url).origin;
     // 发送HTTP GET请求获取网页内容
     const response = await axios.get(url);
     const html = response.data;
@@ -65,7 +67,7 @@ async function downloadImages() {
     fs.mkdirSync(folderName, { recursive: true });
 
     // 获取所有章节的URL
-    const chapterList = document.querySelector('#mh-chapter-list-ol-0');
+    const chapterList = document.querySelector(listDomId);
     const chapterLinks = chapterList.querySelectorAll('a');
 
     // 创建队列实例用于管理下载任务
@@ -74,7 +76,7 @@ async function downloadImages() {
     // 遍历每个章节的URL并加入下载任务队列
     for (const [chapterIndex, chapterLink] of Array.from(chapterLinks).entries()) {
       const chapterUrlSuffix = chapterLink.getAttribute('href');
-      const chapterUrl = new URL(chapterUrlSuffix, baseUrl).href;
+      const chapterUrl = new URL(chapterUrlSuffix, origin).href;
 
       // 发送HTTP GET请求获取章节页面内容
       const chapterResponse = await axios.get(chapterUrl);
@@ -88,12 +90,12 @@ async function downloadImages() {
       const chapterName = chapterDocument.querySelector('title').textContent.split(' ')[0].trim();
 
       // 获取章节中所有图片的URL
-      const imageBox = chapterDocument.querySelector('#m_r_imgbox_0');
+      const imageBox = chapterDocument.querySelector(imgDomId);
       const imageTags = imageBox.querySelectorAll('img');
 
       // 遍历每个图片的URL并加入下载任务队列
       for (const [imageIndex, imageTag] of Array.from(imageTags).entries()) {
-        const imageUrl = imageTag.getAttribute('data-original');
+        const imageUrl = imageTag.getAttribute(imgAttr);
         const imageName = `${imageIndex + 1}`.padStart(3, '0') + '.jpg'; // 使用三位数的序号作为文件名
 
         // 构造图片文件路径
@@ -103,7 +105,7 @@ async function downloadImages() {
 
         // 检查文件是否已存在
         if (fs.existsSync(imagePath)) {
-          console.log(`[${new Date().toLocaleTimeString()}] Skipped existing image: ${imagePath}`);
+          console.log(`[${new Date().toLocaleTimeString()}] 图片已存在，跳过: ${imagePath}`);
           continue;
         }
 
@@ -116,7 +118,7 @@ async function downloadImages() {
           // 保存图片到文件夹
           fs.writeFileSync(imagePath, imageData);
 
-          console.log(`[${new Date().toLocaleTimeString()}] Downloaded image: ${imagePath}`);
+          console.log(`[${new Date().toLocaleTimeString()}] 图片下载完成: ${imagePath}`);
         };
 
         queue.add(downloadTask);
@@ -128,11 +130,26 @@ async function downloadImages() {
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
 
-    console.log('[INFO] All images downloaded successfully.');
+    console.log('[INFO] 所有图片已下载');
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
-downloadImages();
+function promptForURL() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  rl.question(
+    '请输入韩漫地址（例如：https://www.aikanhanman.com/index.php/comic/shechanhuazi）: ',
+    url => {
+      rl.close();
+      downloadImages(url);
+    }
+  );
+}
+
+promptForURL();
 ```

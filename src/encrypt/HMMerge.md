@@ -11,21 +11,21 @@ const fs = require('fs');
 const path = require('path');
 const Jimp = require('jimp');
 
-const INPUT_DIR = './人妻獵人';
+const INPUT_DIR = './社團學姊';
 const OUTPUT_DIR = INPUT_DIR + '/output';
 const THUMBNAIL_WIDTH = 300;
 
 var imagemin = null;
 var imageminPngquant = null;
 
-const readFolders = async dir => {
-  const files = await fs.promises.readdir(dir);
+const readFolders = dir => {
+  const files = fs.readdirSync(dir);
   const folders = files.filter(file => fs.lstatSync(path.join(dir, file)).isDirectory());
   return folders.map(folder => path.join(dir, folder));
 };
 
-const readFiles = async dir => {
-  const files = await fs.promises.readdir(dir);
+const readFiles = dir => {
+  const files = fs.readdirSync(dir);
   const imageFiles = files.filter(
     file =>
       fs.lstatSync(path.join(dir, file)).isFile() &&
@@ -59,7 +59,11 @@ const mergeImages = async files => {
 const compressAndSaveImage = async (image, basename) => {
   // 压缩图片并获取压缩后的 Buffer
   const optimizedBuffer = await imagemin.buffer(await image.getBufferAsync(Jimp.MIME_PNG), {
-    plugins: [imageminPngquant()]
+    plugins: [
+      imageminPngquant({
+        quality: [0.6, 0.8]
+      })
+    ]
   });
 
   // 将压缩后的 Buffer 写入文件
@@ -67,6 +71,30 @@ const compressAndSaveImage = async (image, basename) => {
     path.join(OUTPUT_DIR, `${basename.split(' ')[0]}.png`),
     optimizedBuffer
   );
+};
+
+const processFolder = async (folder, compressImages) => {
+  const files = readFiles(folder);
+  if (files.length === 0) return;
+
+  const basename = path.basename(folder).split(' ')[0];
+  const outputPath = path.join(OUTPUT_DIR, `${basename}.png`);
+
+  // 如果输出文件已存在，则跳过当前文件夹的处理
+  if (fs.existsSync(outputPath)) {
+    console.log(`${basename}已存在，跳过`);
+    return;
+  }
+
+  const merged = await mergeImages(files);
+
+  if (compressImages) {
+    await compressAndSaveImage(merged, basename);
+  } else {
+    await merged.writeAsync(outputPath);
+  }
+
+  console.log(`已合并${files.length}张图片到${basename}`);
 };
 
 const main = async compressImages => {
@@ -78,30 +106,11 @@ const main = async compressImages => {
       fs.mkdirSync(OUTPUT_DIR);
     }
 
-    const folders = await readFolders(INPUT_DIR);
-    console.log(`已找到${folders.length}个文件夹在${INPUT_DIR}`);
-    for (const folder of folders) {
-      const files = await readFiles(folder);
-      if (files.length === 0) continue;
+    const folders = readFolders(INPUT_DIR);
+    console.log(`已找到${folders.length}个文件夹, 开始合并图片，请稍等...`);
 
-      const basename = path.basename(folder).split(' ')[0];
-      const outputPath = path.join(OUTPUT_DIR, `${basename}.png`);
-
-      // 如果输出文件已存在，则跳过当前文件夹的处理
-      if (fs.existsSync(outputPath)) {
-        console.log(`${basename}已存在，跳过`);
-        continue;
-      }
-      const merged = await mergeImages(files);
-
-      if (compressImages) {
-        await compressAndSaveImage(merged, basename);
-      } else {
-        await merged.writeAsync(outputPath);
-      }
-
-      console.log(`已合并${files.length}张图片到${basename}`);
-    }
+    const promises = folders.map(folder => processFolder(folder, compressImages));
+    await Promise.all(promises);
   } catch (error) {
     console.error(`合并图片失败: ${error}`);
   }
