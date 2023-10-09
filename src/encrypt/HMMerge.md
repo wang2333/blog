@@ -12,8 +12,8 @@ const path = require('path');
 const Jimp = require('jimp');
 const readline = require('readline');
 
-const INPUT_DIR = './遊戲不能這樣玩';
-const OUTPUT_DIR = INPUT_DIR + '/output';
+let INPUT_DIR = './社團學姊';
+let OUTPUT_DIR = '';
 const THUMBNAIL_WIDTH = 300;
 
 var imagemin = null;
@@ -122,9 +122,13 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('是否压缩图片？（Y/N）', answer => {
-  const compressImages = answer.trim().toLowerCase() === 'y';
-  main(compressImages);
-  rl.close();
+rl.question('请输入需要合并图片的路径：', path => {
+  INPUT_DIR = path;
+  OUTPUT_DIR = INPUT_DIR + '/output';
+  rl.question('是否压缩图片？（Y/N）', answer => {
+    const compressImages = answer.trim().toLowerCase() === 'y';
+    main(compressImages);
+    rl.close();
+  });
 });
 ```
