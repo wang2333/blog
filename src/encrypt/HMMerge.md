@@ -7,10 +7,11 @@ article: false
 # 韩漫合并
 
 ```javascript
+// npm i jimp imagemin imagemin-pngquant -S
 const fs = require('fs');
 const path = require('path');
-const Jimp = require('jimp');
 const readline = require('readline');
+const Jimp = require('jimp');
 
 let INPUT_DIR = './社團學姊';
 let OUTPUT_DIR = '';
@@ -21,7 +22,9 @@ var imageminPngquant = null;
 
 const readFolders = dir => {
   const files = fs.readdirSync(dir);
-  const folders = files.filter(file => fs.lstatSync(path.join(dir, file)).isDirectory());
+  const folders = files
+    .filter(file => fs.lstatSync(path.join(dir, file)).isDirectory())
+    .filter(folder => folder !== 'output');
   return folders.map(folder => path.join(dir, folder));
 };
 
@@ -122,7 +125,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('请输入需要合并图片的路径：', path => {
+rl.question('请输入需要合并图片的文件夹：', path => {
   INPUT_DIR = path;
   OUTPUT_DIR = INPUT_DIR + '/output';
   rl.question('是否压缩图片？（Y/N）', answer => {
