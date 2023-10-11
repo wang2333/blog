@@ -6,102 +6,69 @@ article: false
 
 # 韩漫下载
 
-```javascript
-// npm i axios puppeteer -S
-const puppeteer = require('puppeteer');
-const readline = require('readline');
-const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
+```python
+import os
+import requests
+from urllib.parse import urlparse, urljoin
+from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 
-async function downloadImages(url) {
-  try {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(url);
+list_selector = '.chapter__list-box'
+img_selector = '.rd-article-wr'
+img_attr = 'data-original'
 
-    const title = await page.title();
-    const folderName = `${title.replace('/', '-').split('-')[0].trim()}`;
-    fs.mkdirSync(folderName, { recursive: true });
+def download_image(url, image_path):
+    try:
+        response = requests.get(url)
+        with open(image_path, 'wb') as f:
+            f.write(response.content)
+        print(f"图片下载完成: {image_path}")
+    except Exception as e:
+        print(f"图片下载失败: {url}")
+        print(e)
 
-    const chapterLinks = await page.$$eval('.chapter__list-box a', links =>
-      links.map(link => link.href)
-    );
-    const uniqueChapterLinks = [...new Set(chapterLinks)].reverse();
+def download_images(url):
+    try:
+        origin = urlparse(url).scheme + '://' + urlparse(url).netloc
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        folder_name = soup.title.string.replace('/', '-').split('-')[0].strip()
+        os.makedirs(folder_name, exist_ok=True)
 
-    for (const [, chapterUrl] of uniqueChapterLinks.entries()) {
-      await page.goto(chapterUrl);
-      const chapterName = await page.$eval('title', element =>
-        element.textContent.split(' ')[0].trim()
-      );
+        with ThreadPoolExecutor() as executor:
+            for link in soup.select(list_selector + ' a'):
+                chapter_link = urljoin(origin, link['href'])
+                chapter_html = requests.get(chapter_link).text
+                chapter_soup = BeautifulSoup(chapter_html, 'html.parser')
+                chapter_name = chapter_soup.title.string.split(' ')[0].strip()
+                chapter_folder_path = os.path.join(folder_name, chapter_name)
+                os.makedirs(chapter_folder_path, exist_ok=True)
 
-      const chapterFolderPath = path.join(folderName, chapterName);
+                image_tasks = []
+                for i, image in enumerate(chapter_soup.select(img_selector + ' img')):
+                    image_url = image[img_attr]
+                    image_name = f"{str(i + 1).zfill(3)}.jpg"
+                    image_path = os.path.join(chapter_folder_path, image_name)
 
-      const imageUrls = await page.$$eval('.rd-article-wr img[data-original]', images =>
-        images.map(image => image.getAttribute('data-original'))
-      );
+                    if os.path.exists(image_path):
+                        print(f"图片已存在，跳过: {image_path}")
+                        continue
 
-      // 判断当前章文件夹中的图片是否已经全部下载完成
-      if (fs.existsSync(chapterFolderPath)) {
-        const imageCount = fs
-          .readdirSync(chapterFolderPath)
-          .filter(name => name.endsWith('.jpg')).length;
+                    task = executor.submit(download_image, image_url, image_path)
+                    image_tasks.append(task)
 
-        if (imageCount === imageUrls.length) {
-          console.log(
-            `[${new Date().toLocaleTimeString()}] 章节图片已全部下载，跳过: ${chapterFolderPath}`
-          );
-          continue;
-        }
-      }
+                for task in image_tasks:
+                    task.result()
 
-      fs.mkdirSync(chapterFolderPath, { recursive: true });
+        print('[INFO] 所有图片已下载')
+    except Exception as e:
+        print('Error:', e)
 
-      const promises = imageUrls.map(async (imageUrl, imageIndex) => {
-        const imageName = `${imageIndex + 1}`.padStart(3, '0') + '.jpg';
-        const imagePath = path.join(chapterFolderPath, imageName);
+def prompt_for_url():
+    url = input('请输入韩漫地址（例如：https://www.aikanhanman.com/index.php/comic/jixiuriji）: ')
+    download_images(url or 'https://www.aikanhanman.com/index.php/comic/jixiuriji')
 
-        if (fs.existsSync(imagePath)) {
-          console.log(`[${new Date().toLocaleTimeString()}] 图片已存在，跳过: ${imagePath}`);
-          return;
-        }
+if __name__ == '__main__':
+    prompt_for_url()
 
-        try {
-          const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-          fs.writeFileSync(imagePath, response.data);
-          console.log(`[${new Date().toLocaleTimeString()}] 下载图片: ${imagePath}`);
-        } catch (error) {
-          console.error(
-            `[${new Date().toLocaleTimeString()}] 下载图片失败: ${imagePath}`,
-            error.message
-          );
-        }
-      });
-
-      await Promise.all(promises);
-    }
-
-    await browser.close();
-    console.log('[INFO] 所有图片已下载');
-  } catch (error) {
-    console.error('Error:', error.message);
-  }
-}
-
-function promptForURL() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  rl.question(
-    '请输入韩漫地址（例如：https://www.aikanhanman.com/index.php/comic/shechanhuazi）: ',
-    url => {
-      downloadImages(url || 'https://www.aikanhanman.com/index.php/comic/shechanhuazi');
-      rl.close();
-    }
-  );
-}
-
-promptForURL();
 ```

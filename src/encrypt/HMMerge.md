@@ -6,132 +6,85 @@ article: false
 
 # 韩漫合并
 
-```javascript
-// npm i jimp imagemin imagemin-pngquant -S
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
-const Jimp = require('jimp');
+```python
+import os
+from PIL import Image
 
-let INPUT_DIR = './社團學姊';
-let OUTPUT_DIR = '';
-const THUMBNAIL_WIDTH = 300;
+THUMBNAIL_WIDTH = 300
+MAX_PIXELS = 65500
 
-var imagemin = null;
-var imageminPngquant = null;
+def read_folders(dir):
+    folders = [os.path.join(dir, folder) for folder in os.listdir(dir) if os.path.isdir(os.path.join(dir, folder)) and folder != 'output']
+    return folders
 
-const readFolders = dir => {
-  const files = fs.readdirSync(dir);
-  const folders = files
-    .filter(file => fs.lstatSync(path.join(dir, file)).isDirectory())
-    .filter(folder => folder !== 'output');
-  return folders.map(folder => path.join(dir, folder));
-};
+def read_files(dir):
+    image_files = [os.path.join(dir, file) for file in os.listdir(dir)
+                   if os.path.isfile(os.path.join(dir, file))
+                   and file.lower().endswith('.jpg')
+                   and file[:3].isdigit()]
+    image_files.sort()
+    return image_files
 
-const readFiles = dir => {
-  const files = fs.readdirSync(dir);
-  const imageFiles = files.filter(
-    file =>
-      fs.lstatSync(path.join(dir, file)).isFile() &&
-      path.extname(file).toLowerCase() === '.jpg' &&
-      /^\d{3}\.jpg$/.test(file)
-  );
-  return imageFiles.sort().map(file => path.join(dir, file));
-};
+def create_thumbnail(file):
+    image = Image.open(file)
+    width, height = image.size
+    thumbnail_height = int(THUMBNAIL_WIDTH * height / width)
+    image.thumbnail((THUMBNAIL_WIDTH, thumbnail_height))
+    return image
 
-const createThumbnail = async file => {
-  const image = await Jimp.read(file);
-  return image.resize(THUMBNAIL_WIDTH, Jimp.AUTO);
-};
+def save_image(image, basename):
+    if image.size[1] > MAX_PIXELS:
+        image.save(os.path.join(OUTPUT_DIR, f"{basename}.png"), optimize=True, quality=90)
+    else:
+        image.save(os.path.join(OUTPUT_DIR, f"{basename}.jpg"), optimize=True, quality=90)
 
-const mergeImages = async files => {
-  const images = await Promise.all(files.map(createThumbnail));
-  const maxHeight = images.reduce((acc, img) => acc + img.getHeight(), 0);
-  const width = THUMBNAIL_WIDTH;
-  const height = maxHeight;
-  const merged = new Jimp(width, height);
+def merge_images(files):
+    images = [create_thumbnail(file) for file in files]
+    heights = [image.size[1] for image in images]
+    total_height = sum(heights)
+    width = THUMBNAIL_WIDTH
+    merged = Image.new('RGB', (width, total_height), color='black')
 
-  let y = 0;
-  for (const img of images) {
-    merged.blit(img, 0, y);
-    y += img.getHeight();
-  }
+    y_offset = 0
+    for image in images:
+        merged.paste(image, (0, y_offset))
+        y_offset += image.size[1]
 
-  return merged;
-};
+    return merged
 
-const compressAndSaveImage = async (image, basename) => {
-  // 压缩图片并获取压缩后的 Buffer
-  const optimizedBuffer = await imagemin.buffer(await image.getBufferAsync(Jimp.MIME_PNG), {
-    plugins: [
-      imageminPngquant({
-        quality: [0.6, 0.8]
-      })
-    ]
-  });
+def process_folder(folder):
+    files = read_files(folder)
+    if len(files) == 0:
+        return
 
-  // 将压缩后的 Buffer 写入文件
-  await fs.promises.writeFile(
-    path.join(OUTPUT_DIR, `${basename.split(' ')[0]}.png`),
-    optimizedBuffer
-  );
-};
+    basename = os.path.basename(folder).split(' ')[0]
+    output_path = os.path.join(OUTPUT_DIR, f"{basename}.jpg")
+    if os.path.exists(output_path):
+        print(f"{basename}已存在，跳过")
+        return
 
-const processFolder = async (folder, compressImages) => {
-  const files = readFiles(folder);
-  if (files.length === 0) return;
+    merged = merge_images(files)
+    save_image(merged, basename)
+    print(f"{basename}合并完成")
 
-  const basename = path.basename(folder).split(' ')[0];
-  const outputPath = path.join(OUTPUT_DIR, `${basename}.png`);
+def main():
+    global INPUT_DIR, OUTPUT_DIR
+    INPUT_DIR = input("请输入需要合并图片的文件夹：")
+    OUTPUT_DIR = os.path.join(INPUT_DIR, "output")
 
-  // 如果输出文件已存在，则跳过当前文件夹的处理
-  if (fs.existsSync(outputPath)) {
-    console.log(`${basename}已存在，跳过`);
-    return;
-  }
+    try:
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        folders = read_folders(INPUT_DIR)
+        print(f"已找到{len(folders)}个文件夹，开始合并图片，请稍等...")
 
-  const merged = await mergeImages(files);
+        for folder in folders:
+            process_folder(folder)
 
-  if (compressImages) {
-    await compressAndSaveImage(merged, basename);
-  } else {
-    await merged.writeAsync(outputPath);
-  }
+        print(f"合并图片完成，输出目录: {OUTPUT_DIR}")
+    except Exception as e:
+        print(f"合并图片失败: {e}")
 
-  console.log(`已合并${files.length}张图片到${basename}`);
-};
+if __name__ == "__main__":
+    main()
 
-const main = async compressImages => {
-  try {
-    imagemin = (await import('imagemin')).default;
-    imageminPngquant = (await import('imagemin-pngquant')).default;
-
-    if (!fs.existsSync(OUTPUT_DIR)) {
-      fs.mkdirSync(OUTPUT_DIR);
-    }
-
-    const folders = readFolders(INPUT_DIR);
-    console.log(`已找到${folders.length}个文件夹, 开始合并图片，请稍等...`);
-
-    const promises = folders.map(folder => processFolder(folder, compressImages));
-    await Promise.all(promises);
-  } catch (error) {
-    console.error(`合并图片失败: ${error}`);
-  }
-};
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-rl.question('请输入需要合并图片的文件夹：', path => {
-  INPUT_DIR = path;
-  OUTPUT_DIR = INPUT_DIR + '/output';
-  rl.question('是否压缩图片？（Y/N）', answer => {
-    const compressImages = answer.trim().toLowerCase() === 'y';
-    main(compressImages);
-    rl.close();
-  });
-});
 ```
