@@ -129,8 +129,6 @@ return ReactDOM.creatPortal(
 - Redux Mobx
 - 自定义事件
 
-## context 使用场景
-
 ## React 中如何避免不必要的 render
 
 - shouldComponentUpdate：对 state 和 props，确定是否要重新渲染，默认情况下返回 true
@@ -141,74 +139,6 @@ return ReactDOM.creatPortal(
 
 - HOC：模式简单，但会增加组件层级
 - Reader props：代码简介
-
-## Redux 单向数据流
-
-- `store = redux.createStore(reducer);`
-- 通过 store.dispatch 来派发 action
-- reducer -> newState
-- store.subscrible 方法订阅 store 的改变
-
-## react-redux
-
-- Provider
-
-  在 redux 中存在一个 store 用于存储 state，如果将这个 store 存放在顶层元素中，其他组件都被包裹在顶层元素之上
-
-  那么所有的组件都能够受到 redux 的控制，都能够获取到 redux 中的数据
-
-  ```javascript
-  <Provider store = {store}>
-    <App />
-  <Provider>
-  ```
-
-- connect 高阶组件
-
-  connect 方法将 store 上的 getState 和 dispatch 包装成组件的 props
-
-  ```javascript
-  import { connect } from 'react-redux';
-  Comp = connect(mapStateToProps, mapDispatchToProps)(Comp);
-  ```
-
-  - mapStateToProps：把 redux 中的数据映射到 react 中的 props 中去
-
-  ```javascript
-  const mapStateToProps = state => {
-    return {
-      // prop : state.xxx  | 意思是将state中的某个数据映射到props中
-      foo: state.bar
-    };
-  };
-  ```
-
-  - mapDispatchToProps：将 redux 中的 dispatch 映射到组件内部的 props 中
-
-  ```javascript
-  const mapDispatchToProps = dispatch => {
-    // 默认传递参数就是dispatch
-    return {
-      onClick: () => {
-        dispatch({
-          type: 'increatment'
-        });
-      }
-    };
-  };
-  ```
-
-## redux 中间件
-
-- redux-thunk 异步处理中间件
-  - redux-thunk 会判断你当前传进来的数据类型，如果是一个函数，将会给函数传入参数值（dispatch，getState）
-- redux-saga
-
-## useReducer 和 redux 的区别
-
-- useReducer 时 useState 的替代方案，用于组件有复杂 state 逻辑时使用
-- useReducer 是单个组件状态管理，组件通讯还行需要 props
-- redux 是全局状态管理，多组件共享状态
 
 ## react-router 与 react-router-dom 区别
 
@@ -279,6 +209,83 @@ return ReactDOM.creatPortal(
   console.log(state)  // {id:1,name:"zora"}
   ```
 
+## Redux 单向数据流
+
+- `store = redux.createStore(reducer);`
+- 通过 store.dispatch 来派发 action
+- reducer -> newState
+- store.subscrible 方法订阅 store 的改变
+
+## react-redux
+
+- Provider
+
+  在 redux 中存在一个 store 用于存储 state，如果将这个 store 存放在顶层元素中，其他组件都被包裹在顶层元素之上
+
+  那么所有的组件都能够受到 redux 的控制，都能够获取到 redux 中的数据
+
+  ```javascript
+  <Provider store = {store}>
+    <App />
+  <Provider>
+  ```
+
+- connect 高阶组件
+
+  connect 方法将 store 上的 getState 和 dispatch 包装成组件的 props
+
+  ```javascript
+  import { connect } from 'react-redux';
+  Comp = connect(mapStateToProps, mapDispatchToProps)(Comp);
+  ```
+
+  - mapStateToProps：把 redux 中的数据映射到 react 中的 props 中去
+
+  ```javascript
+  const mapStateToProps = state => {
+    return {
+      // prop : state.xxx  | 意思是将state中的某个数据映射到props中
+      foo: state.bar
+    };
+  };
+  ```
+
+  - mapDispatchToProps：将 redux 中的 dispatch 映射到组件内部的 props 中
+
+  ```javascript
+  const mapDispatchToProps = dispatch => {
+    // 默认传递参数就是dispatch
+    return {
+      onClick: () => {
+        dispatch({
+          type: 'increatment'
+        });
+      }
+    };
+  };
+  ```
+
+## redux 中间件
+
+- redux-thunk 异步处理中间件
+  - redux-thunk 会判断你当前传进来的数据类型，如果是一个函数，将会给函数传入参数值（dispatch，getState）
+- redux-saga
+
+## useReducer 和 redux 的区别
+
+- useReducer 时 useState 的替代方案，用于组件有复杂 state 逻辑时使用
+- useReducer 是单个组件状态管理，组件通讯还行需要 props
+- redux 是全局状态管理，多组件共享状态
+-
+
+## React fibel
+
+- React 更新的的两个阶段
+  - reconciliation 阶段执行 diff 算法，纯 JS 计算
+  - commit 阶段，将 diff 结果渲染到 DOM
+- 将 reconciliation 阶段进行任务拆分
+- window.requestIdleCallback 当 DOM 需要渲染时暂停
+
 ## JSX 本质
 
 > react 通过 babel 把 JSX 转成 createElement 函数，生成 ReactElement 对象，然后通过 ReactDOM.render 函数把 ReactElement 渲染成真是的 DOM 元素
@@ -297,11 +304,3 @@ var ele = React.createElement(
   React.createElement('span', null, '1212')
 );
 ```
-
-## React fibel
-
-- React 更新的的两个阶段
-  - reconciliation 阶段执行 diff 算法，纯 JS 计算
-  - commit 阶段，将 diff 结果渲染到 DOM
-- 将 reconciliation 阶段进行任务拆分
-- window.requestIdleCallback 当 DOM 需要渲染时暂停

@@ -19,11 +19,13 @@ export default sidebar({
       link: 'react/',
       children: 'structure'
     },
+    'project',
     {
-      text: '保险柜',
-      icon: 'lock',
+      text: '爬虫脚本',
+      icon: 'fas fa-spider',
       prefix: 'encrypt/',
-      children: ['HMDownload', 'HMMerge']
+      link: 'encrypt/'
+      // children: ['HMDownload', 'HMMerge']
     },
     {
       text: '如何使用',
@@ -31,7 +33,6 @@ export default sidebar({
       prefix: 'demo/',
       link: 'demo/',
       children: 'structure'
-    },
-    'project'
+    }
   ]
 });

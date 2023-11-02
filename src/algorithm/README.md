@@ -3,9 +3,10 @@ title: 数据结构算法
 icon: fas fa-pen
 sticky: 5
 category:
-  - 前端进阶
+  - js进阶
 tag:
   - 数据结构
+  - js进阶
 ---
 
 前端常见的数据结构和算法

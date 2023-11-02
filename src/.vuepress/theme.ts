@@ -12,7 +12,7 @@ export default hopeTheme(
     iconAssets: 'fontawesome-with-brands',
     logo: '/assets/icon/logo.png',
     // repo: 'vuepress-theme-hope/vuepress-theme-hope',
-    // pageInfo: false, // disable the information of pages
+    pageInfo: ['Category', 'Tag'],
     contributors: false, // disable the information of contributors
     footer: '',
     darkmode: 'disable',

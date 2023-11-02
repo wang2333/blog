@@ -15,8 +15,6 @@ Vue 具有简洁易学的语法，通过使用指令和插值表达式，可以�
 
 ## 生命周期
 
-![](https://img1.imgtp.com/2023/09/19/GjaujDOP.png)
-
 ### 组件生命周期函数的分类
 
 - 组件创建阶段：new Vue() -> beforeCreate -> created -> beforeMount -> Mounted
@@ -164,11 +162,6 @@ Vue 什么时候操作 DOM 比较合适？
 - 绑定 input 时间 this.name = $event.target.value
 - data 更新触发 re-render
 
-## defineProperty 缺点
-
-1. 深度监听，需要递归到底，一次性计算量大
-2. 无法监听新增属性和删除属性
-
 ## 如何监听数组变化
 
 监听对象属性时，如果是数组，重写该对象的原型
@@ -184,20 +177,6 @@ const arrProto = Object.creat(oldArrayProperty)
   }
 })
 ```
-
-## 性能优化之为什么不要频繁操作 DOM
-
-> 把 DOM 和 JavaScript 各自想象成一个岛屿，它们之间用收费桥梁连接。——《高性能 JavaScript》
-
-- 在浏览器中 DOM 的实现和 ECMAScript 是分离的。
-- ES 和 DOM 是两种东西，每次连接都需要消耗性能
-- 操作 DOM 会导致重排和重绘，重排会占用、消耗 CPU; 重绘会占用、消耗 GPU
-
-## vdom（snabbdom 库）
-
-- 用 js 模拟 DOM 结构（vnode）
-- 新旧 vnode 对比，得出最小的更新范围，最好更新 DOM
-- 数据驱动视图的模式下，有效控制 DOM 操作
 
 ## Vue2 diff 算法
 
@@ -250,31 +229,3 @@ const arrProto = Object.creat(oldArrayProperty)
 - 全局路由：beforeEach、beforeResolve、afterEach（参数中没有 next）
 - 组件内路由：beforeRouterEnter、beforeRouteUpdate、beforeRouteLeave
 - 路由独享：beforeEnter
-
-## Composition API 与 Options API 区别
-
-- 更好的代码组织
-- 更好的逻辑复用
-- 更好的类型推导
-
-## Proxy 与 Object.defineProperty 区别
-
-- Proxy 可以直接监听对象而非属性
-- Object.defineProperty 需初始化时递归监听，Proxy 在访问时才会监听
-
-## watch 和 watchEffect 区别
-
-- watch 需要指定监听的属性，watchEffect 会自动收集依赖
-- watchEffect 会在组件初始化时执行一次，watch 不会
-
-## Vue3 优化点
-
-- 响应式系统升级， Proxy 替换 Object.defineProperty
-- 编译优化，重写了模板编译，标记静态节点，diff 时跳过静态节点 （PatchFlag）
-- 将静态节点的定义提升到父作用域缓存，多个相邻的静态节点合并缓存 （HoistStatic）
-- 源码体积优化 （Tree-shaking）
-
-## Vite
-
-- 开发环境基于 ES Module，不需要打包，直接浏览器原生支持
-- 生产环境基于 Rollup 打包，打包速度快
