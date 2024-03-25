@@ -3,8 +3,14 @@ import { sidebar } from 'vuepress-theme-hope';
 export default sidebar({
   '/': [
     '',
-    'advanced',
     'algorithm',
+    {
+      text: 'JavaScript系列',
+      icon: 'fab fa-bitbucket',
+      prefix: 'javascript/',
+      link: 'javascript/',
+      children: 'structure'
+    },
     {
       text: 'Vue系列',
       icon: 'fab fa-vuejs',

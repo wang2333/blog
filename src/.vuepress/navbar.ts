@@ -2,8 +2,13 @@ import { navbar } from 'vuepress-theme-hope';
 
 export default navbar([
   '/',
-  'advanced',
   'algorithm',
+  {
+    text: 'JavaScript系列系列',
+    icon: 'fab fa-bitbucket',
+    prefix: 'javascript/',
+    link: 'javascript'
+  },
   {
     text: 'Vue系列',
     icon: 'fab fa-vuejs',
