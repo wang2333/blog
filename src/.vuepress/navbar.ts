@@ -5,7 +5,7 @@ export default navbar([
   'algorithm',
   {
     text: 'JavaScript系列系列',
-    icon: 'fab fa-bitbucket',
+    icon: 'fab fa-js',
     prefix: 'javascript/',
     link: 'javascript'
   },

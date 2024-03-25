@@ -1,6 +1,6 @@
 ---
 title: JavaScript系列
-icon: fab fa-bitbucket
+icon: fab fa-js
 article: false
 index: false
 ---
